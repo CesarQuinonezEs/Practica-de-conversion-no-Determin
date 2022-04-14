@@ -47,11 +47,15 @@ public class nuevosEstados {
     }
 
     public void setEstado0(String estado0) {
+        if(estado0.charAt(0) != 's'){
         this.estado0 = estado0;
+        }
     }
 
     public void setEstado1(String estado1) {
+        if(estado1.charAt(0) != 's'){
         this.estado1 = estado1;
+        }
     }
 
     public void setEsI(String esI) {

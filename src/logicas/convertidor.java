@@ -24,7 +24,7 @@ public class convertidor {
         
     }
     public String flagInicial(){
-        System.out.println("llegue al inicial, es:" + estadoAC + "es :" +esI);
+        //System.out.println("llegue al inicial, es:" + estadoAC + "es :" +esI);
         return esI;
     }
 
