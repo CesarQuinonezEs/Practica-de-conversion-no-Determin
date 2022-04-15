@@ -4,6 +4,8 @@
  */
 package automatas;
 
+import ventas.ventanamenu;
+
 /**
  *
  * @author cesar

@@ -212,6 +212,7 @@ public class frmConvertidorA extends javax.swing.JFrame {
              estadosSigu.add(estadosCon[i].getEstadoAC());
              //estadoNuevo[cont1].setEsI("1");
              estadoNuevo.get(estadoNuevo.size() - 1).setEsI("1");
+             estadoNuevo.get(estadoNuevo.size() - 1).setEsA(estadosCon[i].getEsA());
              //System.out.println("iniciador esta en :"+iniciador);
              //System.out.println("llegue el estado actual es: del primer iniciador" + estadoNuevo.get(estadoNuevo.size() - 1).getEstadoAc());
              if(!"".equals(estadosCon[i].ingreando1())){
@@ -262,7 +263,12 @@ public class frmConvertidorA extends javax.swing.JFrame {
                        
                        System.out.println("ya estoy dentro del if y se va intentar aniadir: "+estadosSigu.get(estadosSigu.size() -1));
                    estadoNuevo.get(estadoNuevo.size() - 1).setEstadoAc(estadosSigu.get(estadosSigu.size() -1));
-                   
+                   for(int o = 0; o < cont; o++){
+                       if(estadoNuevo.get(estadoNuevo.size() - 1).getEstadoAc().equals(estadosCon[o].getEstadoAC())){
+                       estadoNuevo.get(estadoNuevo.size() - 1).setEsA(estadosCon[o].getEsA());
+                       estadoNuevo.get(estadoNuevo.size() - 1).setEsI(estadosCon[o].getEsI());
+                       }
+                   }
                    }else{
                        System.out.println("Llegue al else por que se encontro que es igual");
                        //int jijija = 0
@@ -287,6 +293,12 @@ public class frmConvertidorA extends javax.swing.JFrame {
                                  estadoNuevo.add(new nuevosEstados());
                                  estadoNuevo.get(estadoNuevo.size() - 1).setEstadoAc(estadosSigu.get(pa));
                                  estadosSigu.add(estadoNuevo.get(estadoNuevo.size() - 1).getEstadoAc());
+                   for(int o = 0; o < cont; o++){
+                       if(estadoNuevo.get(estadoNuevo.size() - 1).getEstadoAc().equals(estadosCon[o].getEstadoAC())){
+                       estadoNuevo.get(estadoNuevo.size() - 1).setEsA(estadosCon[o].getEsA());
+                       estadoNuevo.get(estadoNuevo.size() - 1).setEsI(estadosCon[o].getEsI());
+                       }
+                   }
                            }
                        }
                    }
@@ -295,6 +307,12 @@ public class frmConvertidorA extends javax.swing.JFrame {
                        System.out.println("pasa directo");
                        estadoNuevo.add(new nuevosEstados());
                        estadoNuevo.get(estadoNuevo.size() - 1).setEstadoAc(estadosSigu.get(estadosSigu.size() -1));
+                       for(int o = 0; o < cont; o++){
+                       if(estadoNuevo.get(estadoNuevo.size() - 1).getEstadoAc().equals(estadosCon[o].getEstadoAC())){
+                       estadoNuevo.get(estadoNuevo.size() - 1).setEsA(estadosCon[o].getEsA());
+                       estadoNuevo.get(estadoNuevo.size() - 1).setEsI(estadosCon[o].getEsI());
+                       }
+                   }
                    }
                    ArrayList<String> auxList1 = new ArrayList<String>();
                    ArrayList<String> auxList0 = new ArrayList<String>();
@@ -417,6 +435,12 @@ public class frmConvertidorA extends javax.swing.JFrame {
                    if(auxiliar == 0){
                        estadoNuevo.add(new nuevosEstados());
                    estadoNuevo.get(estadoNuevo.size() - 1).setEstadoAc(estadosSigu.get(estadosSigu.size() -1));
+                                      for(int o = 0; o < cont; o++){
+                       if(estadoNuevo.get(estadoNuevo.size() - 1).getEstadoAc().equals(estadosCon[o].getEstadoAC())){
+                       estadoNuevo.get(estadoNuevo.size() - 1).setEsA(estadosCon[o].getEsA());
+                       estadoNuevo.get(estadoNuevo.size() - 1).setEsI(estadosCon[o].getEsI());
+                       }
+                   }
                    }else{
                        System.out.println("Llegue al else por que se encontro que es igual");
                        //int jijija = 0
@@ -449,6 +473,12 @@ public class frmConvertidorA extends javax.swing.JFrame {
                                  estadoNuevo.add(new nuevosEstados());
                                  estadoNuevo.get(estadoNuevo.size() - 1).setEstadoAc(estadosSigu.get(pa));
                                  estadosSigu.add(estadoNuevo.get(estadoNuevo.size() - 1).getEstadoAc());
+                                 for(int o = 0; o < cont; o++){
+                                        if(estadoNuevo.get(estadoNuevo.size() - 1).getEstadoAc().equals(estadosCon[o].getEstadoAC())){
+                                        estadoNuevo.get(estadoNuevo.size() - 1).setEsA(estadosCon[o].getEsA());
+                                        estadoNuevo.get(estadoNuevo.size() - 1).setEsI(estadosCon[o].getEsI());
+                                    }
+                                }
                            }
                            }
                        //System.out.println("estamos en la iteracion de pa: "+pa);
@@ -631,11 +661,18 @@ public class frmConvertidorA extends javax.swing.JFrame {
         }
        System.out.println("sali del while");
             for(int j = 0; j < estadoNuevo.size(); j++){
-          
+            
             System.out.println("estados guardados: "+estadoNuevo.get(j).getEstadoAc());
             System.out.println("estado en 0: "+estadoNuevo.get(j).getEstado0());
             System.out.println("estado en 1: "+estadoNuevo.get(j).getEstado1());
+            System.out.println("estado aceptador: "+estadoNuevo.get(j).getEsA());
+            System.out.println("estado inical: "+estadoNuevo.get(j).getEsI());
             System.out.println("estan ya checados: "+estadoNuevo.get(j).getFlagCheck());
+            if(!"s".equals(estadoNuevo.get(j).getEstadoAc())){
+            sentencia = String.format("INSERT INTO deterministicos(idDeter, estadoAc, estado0, estado1, esInicial, esAceptador, idAceptador) VALUES(null,'%s','%s','%s','%s','%s','%s')",estadoNuevo.get(j).getEstadoAc(),estadoNuevo.get(j).getEstado0() ,estadoNuevo.get(j).getEstado1(),estadoNuevo.get(j).getEsI(),estadoNuevo.get(j).getEsA(),auxId);
+            conec.ejecutar(sentencia);
+            }
+
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_btnConvertirActionPerformed
