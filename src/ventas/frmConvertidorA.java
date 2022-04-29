@@ -8,6 +8,7 @@ import baseDeDatos.conexion;
 import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import javax.swing.JTable;
 import logicas.convertidor;
@@ -198,43 +199,111 @@ public class frmConvertidorA extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.println("Error en conversor:"+ e);
         }
-            //System.out.print(cont);
+            //Busca iniciador------------------------------------------------------------------------
+            ArrayList<String> iniList = new ArrayList<String>();
         for(int i = 0; i< cont; i++){
-            //System.out.println("llegue al for");
             if("1".equals(estadosCon[i].flagInicial())){
-            //System.out.println("iniciador");
              iniciador = i;
-             //estadoNuevo[cont1] = new nuevosEstados();
-             estadoNuevo.add(new nuevosEstados());
-             //estadoNuevo[cont1].setEstadoAc(estadosCon[i].getEstadoAC());
-             //System.out.println("el tamanio de estado la lista es: "+estadoNuevo.size());
-             estadoNuevo.get(estadoNuevo.size() - 1).setEstadoAc(estadosCon[i].getEstadoAC());
-             estadosSigu.add(estadosCon[i].getEstadoAC());
-             //estadoNuevo[cont1].setEsI("1");
-             estadoNuevo.get(estadoNuevo.size() - 1).setEsI("1");
-             estadoNuevo.get(estadoNuevo.size() - 1).setEsA(estadosCon[i].getEsA());
-             //System.out.println("iniciador esta en :"+iniciador);
-             //System.out.println("llegue el estado actual es: del primer iniciador" + estadoNuevo.get(estadoNuevo.size() - 1).getEstadoAc());
-             if(!"".equals(estadosCon[i].ingreando1())){
-             estadosSigu.add(estadosCon[i].ingreando1());
-             //estadoNuevo[cont1].setEstado1(estadosCon[i].ingreando1());
-             estadoNuevo.get(estadoNuevo.size() - 1).setEstado1(estadosCon[i].ingreando1());
-             }else{/*estadoNuevo[cont1].setEstado1("");*/ /*estadoNuevo.get(estadoNuevo.size() - 1).setEstado1("");*/}
-             if(!"".equals(estadosCon[i].ingreando0())){
-             estadosSigu.add(estadosCon[i].ingreando0());
-             //estadoNuevo[cont1].setEstado0(estadosCon[i].ingreando0());
-             estadoNuevo.get(estadoNuevo.size() - 1).setEstado0(estadosCon[i].ingreando0());
-             }else{
-                 //estadoNuevo[cont1].setEstado0("");
-                 //estadoNuevo.get(estadoNuevo.size() - 1).setEstado0("");
-             }
-             //estadoNuevo.get(estadoNuevo.size() - 1).setFlagCheck(1);
+             iniList.add(estadosCon[i].getEstadoAC());
+
              cont1++;
             }
         }
+        String auxSi = "T";
+        for(int i = 0; i < iniList.size(); i++){
+        if(i == 0){
+        auxSi = iniList.get(i);
+        }else{
+           auxSi = auxSi +iniList.get(i);
+        }
+        }
+        estadoNuevo.add(new nuevosEstados());
+        estadoNuevo.get(estadoNuevo.size() - 1).setEstadoAc(auxSi);
+        estadoNuevo.get(estadoNuevo.size() - 1).setEsI("1");
+        //estadosSigu.add(auxSi);
+        ArrayList<String> auxL0 = new ArrayList<String>();
+        ArrayList<String> auxL1 = new ArrayList<String>();
+        System.out.println(auxSi + " y " + auxSi.length());
+        if(auxSi.length() >= 2){
+            for(int i = 0; i < auxSi.length(); i++){
+                for(int j = 0; j < cont; j++){
+                    if(auxSi.charAt(i) == estadosCon[j].getEstadoAC().charAt(0)){
+                    if(!"".equals(estadosCon[j].ingreando0())){
+                        auxL0.add(estadosCon[j].ingreando0());
+                        }
+                        if(!"".equals(estadosCon[j].ingreando1())){
+                        auxL1.add(estadosCon[j].ingreando1());
+                        }
+                    }
+                }
+            }
+            //para 1
+            String Aux2 = "T";
+            for(int i = 0; i < auxL1.size(); i++){
+                if(i == 0){
+                    Aux2 = auxL1.get(i);
+                }else{Aux2 = Aux2 + auxL1.get(i);}
+            }
+            char[] ok = Aux2.toCharArray();
+            Arrays.sort(ok);
+            String acomodada = new String(ok);
+            String aux3 = "T";
+            for(int i = 0; i < acomodada.length(); i++){
+            if("T".equals(aux3) && acomodada.charAt(i) != ','){
+            aux3 = String.valueOf(acomodada.charAt(i));
+            }else if(acomodada.charAt(i) != ','){
+                aux3 = aux3 + String.valueOf(acomodada.charAt(i));
+            }
+            }
+            System.out.println("Para 0 en el inicial: "+aux3);
+            if(!"T".equals(aux3)){
+            estadoNuevo.get(estadoNuevo.size() - 1).setEstado1(aux3);
+            estadosSigu.add(aux3);
+            }
+            
+            
+            //para 0
+            //String Aux2 = "s";
+            for(int i = 0; i < auxL0.size(); i++){
+                if(i == 0){
+                    Aux2 = auxL0.get(i);
+                }else {Aux2 = Aux2 + auxL0.get(i);}
+            }
+            char[] ok2 = Aux2.toCharArray();
+            Arrays.sort(ok2);
+            String acomodada2 = new String(ok2);
+            String aux32 = "s";
+            for(int i = 0; i < acomodada2.length(); i++){
+            if("s".equals(aux32) && acomodada2.charAt(i) != ','){
+            aux32 = String.valueOf(acomodada2.charAt(i));
+            }else if(acomodada2.charAt(i) != ','){
+                aux32 = aux32 + String.valueOf(acomodada2.charAt(i));
+            }
+            }
+            System.out.println(aux32);
+            if(!"s".equals(aux32)){
+            estadoNuevo.get(estadoNuevo.size() - 1).setEstado0(aux32);
+            estadosSigu.add(aux32);
+            }
+        }else{
+        for(int i = 0; i < cont; i++){
+        if(auxSi.equals(estadosCon[i].getEstadoAC())){
+        if(!"".equals(estadosCon[i].ingreando1())){
+             estadosSigu.add(estadosCon[i].ingreando1());
+              estadoNuevo.get(estadoNuevo.size() - 1).setEstado1(estadosCon[i].ingreando1());
+             }
+             if(!"".equals(estadosCon[i].ingreando0())){
+             estadosSigu.add(estadosCon[i].ingreando0());
+             estadoNuevo.get(estadoNuevo.size() - 1).setEstado0(estadosCon[i].ingreando0());
+             }
+        }
+        }
+        
+        }
         while(flag == 0){
             System.out.println("---estoy en el while----");
-            System.out.println("La cadena que se va utilizar al inicio es:"+estadosSigu.get(estadosSigu.size()-1));
+            System.out.println("tamanio " + estadosSigu.size());
+            //System.out.println("La cadena que se va utilizar al inicio es:"+estadosSigu.get(estadosSigu.size() - 1));
             //System.out.println("el contador1 es: "+cont1);
             int auxsito = estadosSigu.get(estadosSigu.size()-1).length();
         System.out.println("El auxsito es: " + auxsito);
@@ -249,7 +318,7 @@ public class frmConvertidorA extends javax.swing.JFrame {
                    int auxiliar = 0;
                    System.out.println("se va intentar aniadir: "+estadosSigu.get(estadosSigu.size() -1));
                    System.out.println("El tamanio de el estado nuevo es: "+estadoNuevo.size());
-                   if(estadoNuevo.size() > 2){
+                   if(estadoNuevo.size() >= 2){
                        System.out.println("Entre al if de comprobador");
                    for(int io = 0; io < estadoNuevo.size()  && auxiliar == 0; io++){
                        System.out.println("Entre al if de comprobador se esta comprobando: "+estadosSigu.get(estadosSigu.size() -1));
@@ -274,16 +343,21 @@ public class frmConvertidorA extends javax.swing.JFrame {
                        //int jijija = 0
                        //si ya se utilizo pazamos con alguno que no se haya utilizado
                        int hola = 0;
-                   for(int pa = 0; pa <estadosSigu.size() && auxiliar == 1; pa++){
+                      // System.out.println("Estados siguientes : " + estadosSigu.size());
+                       //System.out.println("Esadtos nuevos : " + estadoNuevo.size());
+                   for(int pa = 0; pa < estadosSigu.size() && auxiliar == 1; pa++){
+                       //System.out.println("Llegue al for");
                        hola= 0;
-                       for(int pe = 0; pe < estadoNuevo.size() && hola == 0;){
+                       for(int pe = 0; pe < estadoNuevo.size() && hola == 0; pe++){
+                          // System.out.println("Llegue  al 2do for " + estadosSigu.get(pa));
+                          // System.out.println("estado sig " + estadoNuevo.get(pe).getEstadoAc());
                        if(estadosSigu.get(pa).equals(estadoNuevo.get(pe).getEstadoAc())){
                            hola = 1;
                        }
                        }
                        if(hola == 0){
                            auxiliar = 0;
-                           if(estadosSigu.get(pa).charAt(0) == 's'){
+                           if(estadosSigu.get(pa).charAt(0) == 'T'){
                                flag = 1;
                                  estadoNuevo.add(new nuevosEstados());
                                  estadoNuevo.get(estadoNuevo.size() - 1).setEstadoAc(estadosSigu.get(pa));
@@ -302,6 +376,7 @@ public class frmConvertidorA extends javax.swing.JFrame {
                            }
                        }
                    }
+                   System.out.println("Hola " + hola);
                    }
                    }else{
                        System.out.println("pasa directo");
@@ -325,7 +400,7 @@ public class frmConvertidorA extends javax.swing.JFrame {
                if( estadosSigu.get(estadosSigu.size() -1).charAt(j) == estadosCon[k].getEstadoAC().charAt(0)){
                         if(!"".equals(estadosCon[k].ingreando1())){
                             System.out.println(estadosSigu.get(estadosSigu.size() -1).charAt(j)+" es igual a " + estadosCon[k].getEstadoAC());
-                            System.out.println("El estado "+estadosCon[k].ingreando1());
+                            System.out.println("El estado "+ estadosCon[k].ingreando1());
                             if(estadosCon[k].ingreando1().length() > 1){
                                 char aux10 =auxList1.get(auxList1.size() - 1).charAt(0);
                                 for(int x = 0; x < estadosCon[k].ingreando1().length(); x++){
@@ -348,67 +423,162 @@ public class frmConvertidorA extends javax.swing.JFrame {
 
            }
            }
-            System.out.println("Para "+estadoNuevo.get(estadoNuevo.size() - 1).getEstadoAc()+" se esta aniadiendo : ");
+            //System.out.println("Para "+estadoNuevo.get(estadoNuevo.size() - 1).getEstadoAc()+" se esta aniadiendo : ");
                 //char aux11;
-                int a;
-                int b = 0;
-                int aux34 = 0;
-                int auxili = auxList1.size() - 1;
-                //System.out.println("Es tamanio de la lista 1 es: " +auxili);
-                for(int je = 0; je < auxList1.size(); je++){
-                    a = auxList1.get(je).charAt(0);
-                 if(je == 0){
-                 b = auxList1.get(je).charAt(0);
-                 aux34 = 0;
-                 }else if(b > a){
-                 auxList1.set(aux34,String.valueOf((char)a));
-                 //System.out.println("se aniadio: "+ (char)a);
-                 //System.out.println("en " + aux34);
-                 //System.out.println("se aniadio: "+auxList1.get(aux34));
-                 aux34 = je;
-                 }
-                 if(je == auxili){
-                     //System.out.println("entro al else");
-                     auxList1.set(aux34,String.valueOf((char)b));
-                     //System.out.println("se aniadio: "+ (char)b);
-                     //System.out.println("se aniadio: "+auxList1.get(aux34));
-                     
-                 }
-                //System.out.println("se aniadio"+auxList1.get(je));
-                //System.out.println("se aniadio: "+auxList1.get(aux34));
+
+                String axualito2 ="T";
+                for(int u = 0; u < auxList1.size(); u++){
+                    if(u == 0){
+                        if(auxList1.get(u).length() >= 2){
+                        for(int v = 0; v <= auxList1.get(u).length(); v++){
+                                if(v == 0){
+                                    axualito2 = String.valueOf(auxList1.get(u).charAt(v));
+                                }else if(auxList1.get(u).charAt(v) != ','){
+                                    axualito2 = axualito2 + String.valueOf(auxList1.get(u).charAt(v));
+                                }
+                            }
+                        }else{
+                        axualito2 = auxList1.get(u);
+                        }
+                    }else{
+                         if(auxList1.get(u).length() >= 2){
+                        for(int v = 0; v <= auxList1.get(u).length(); v++){
+                                    if(auxList1.get(u).charAt(v) != ','){
+                                    axualito2 = axualito2 + String.valueOf(auxList1.get(u).charAt(v));
+                                }
+                            }
+                        }else{
+                             axualito2 = axualito2 + auxList1.get(u);
+                         }
+                    }
                 }
-            
-            String auxAs = "";
-            //para lista de los 1
-            for(int j = 0; j < auxList1.size(); j++){
+                char[] auCon1 = axualito2.toCharArray();
+                Arrays.sort(auCon1);
+                System.out.println(auCon1);
+                String aux90;
+                aux90 = new String(auCon1);
+                System.out.println("aux90: "+aux90);
+            String auxAs = "T";
+            String auxFlg = "T";
+            //para lista de los 0
+            for(int j = 0; j < aux90.length(); j++){
+
                 if(j == 0){
-                auxAs = auxList1.get(j);
-                
+                    auxAs = String.valueOf(aux90.charAt(0));
+                    auxFlg = String.valueOf(aux90.charAt(0));
                  }else{
                     
-                     auxAs = auxAs +","+auxList1.get(j);
+                    if(aux90.charAt(j) == auxFlg.charAt(0)){
+                    } else {
+                        auxAs = auxAs + String.valueOf(aux90.charAt(j));
+                        auxFlg = String.valueOf(aux90.charAt(j));
+                    }
+                    System.out.println("auxAs " + auxAs);
                  }
                 //System.out.println("Se esta guardado: " + auxAs);
             }
                //System.out.println("se aniado: "+ auxAs);
                //System.out.println("aqui ya la cago jejje");
+               if(auxAs.charAt(0) == 'T'){}else{
                estadosSigu.add(auxAs);
+               }
                estadoNuevo.get(estadoNuevo.size() - 1).setEstado1(auxAs);
+               
                //para 0
-            for(int j = 0; j < auxList0.size(); j++){
+           /* for(int j = 0; j < auxList0.size(); j++){
                 if(j == 0){
                 auxAs = auxList0.get(j);
                 
                  }else{
-                     auxAs = auxAs +","+auxList0.get(j);
+                     auxAs = auxAs +auxList0.get(j);
+                 }
+                //System.out.println("Se esta guardado: " + auxAs);
+            }*/
+           
+            String axualito20 = "T";
+                for(int u = 0; u < auxList0.size(); u++){
+                     
+                    if(u == 0){
+                        System.out.println(auxList0.get(u));
+                        if(auxList0.get(u).length() >= 2){
+                            System.out.println("Llegamos al a que su tamanio es mayor a 2 para: " + auxList0.get(u));
+                        for(int v = 0; v < auxList0.get(u).length(); v++){
+                                if(v == 0){
+                                    System.out.println(auxList0.get(u).charAt(v));
+                                    axualito20 = String.valueOf(auxList0.get(u).charAt(v));
+                                }else if(auxList0.get(u).charAt(v) != ','){
+                                    System.out.println(auxList0.get(u).charAt(v));
+                                    axualito20 = axualito20 + String.valueOf(auxList0.get(u).charAt(v));
+                                }
+                            }
+                        }else{
+                            if("T".equals(axualito20)){
+                        axualito20 = auxList0.get(u);}else{
+                            axualito20 = axualito20 + auxList0.get(u);
+                            }
+                        }
+                    }else{
+                        System.out.println(auxList0.get(u));
+                         if(auxList0.get(u).length() >= 2){
+                             System.out.println("Llegamos fuera de la it 0 al a que su tamanio es mayor a 2 para: " + auxList0.get(u));
+                        for(int v = 0; v < auxList0.get(u).length(); v++){
+                                    if(auxList0.get(u).charAt(v) != ','){
+                                    axualito20 = axualito20 + String.valueOf(auxList0.get(u).charAt(v));
+                                }
+                            }
+                        }else{
+                             System.out.println(axualito20);
+                             axualito20 = axualito20 + auxList0.get(u);
+                         }
+                    }
+                   System.out.println("Vlor de aux: "+ axualito20);
+                }
+                System.out.println("sali del for");
+                char[] auCon0 = axualito20.toCharArray();
+                 
+                Arrays.sort(auCon0);
+                //System.out.println(auCon1);
+                String aux0 = new String(auCon0);
+                //aux0 = new String(auCon0);
+                //System.out.println("::: " + aux0);
+                //System.out.println("aux90: "+aux0);
+            String auxAs0 = "T";
+            String auxFlg0 = "T";
+            //para lista de los 0
+            for(int j = 0; j < aux0.length(); j++){
+
+                if(j == 0){
+                    auxAs0 = String.valueOf(aux0.charAt(0));
+                    auxFlg0 = String.valueOf(aux0.charAt(0));
+                 }else{
+                    
+                    if(aux0.charAt(j) == auxFlg0.charAt(0)){
+                    } else {
+                        auxAs0 = auxAs0 + String.valueOf(aux0.charAt(j));
+                        auxFlg0 = String.valueOf(aux0.charAt(j));
+                    }
+                    //System.out.println("auxAs0 " + auxAs0);
                  }
                 //System.out.println("Se esta guardado: " + auxAs);
             }
                //System.out.println("se aniado: "+ auxAs);
-                //System.out.println("aqui ya la cago jejje 2");
-               estadosSigu.add(auxAs);
-               //estadoNuevo[cont1].setEstado0(auxAs);
-               estadoNuevo.get(estadoNuevo.size() - 1).setEstado0(auxAs);
+               //System.out.println("aqui ya la cago jejje");
+               //System.out.println(auxAs0);;
+               
+               //para 0
+            /*for(int j = 0; j < auxList0.size(); j++){
+                if(j == 0){
+                auxAs = auxList0.get(j);
+                
+                 }else{
+                     auxAs = auxAs +auxList0.get(j);
+                 }
+                //System.out.println("Se esta guardado: " + auxAs);
+            }*/
+              if(auxAs0.charAt(0) == 'T'){}else{
+               estadosSigu.add(auxAs0);
+              }
+               estadoNuevo.get(estadoNuevo.size() - 1).setEstado0(auxAs0);
                
                //poneAlnuevoEstado como revisador
                estadoNuevo.get(estadoNuevo.size() - 2).setFlagCheck(1);
@@ -445,30 +615,25 @@ public class frmConvertidorA extends javax.swing.JFrame {
                        System.out.println("Llegue al else por que se encontro que es igual");
                        //int jijija = 0
                        //si ya se utilizo pazamos con alguno que no se haya utilizado
-                       int hola;
+                       int hola = 0;
                    for(int pa = 0; pa <estadosSigu.size() && auxiliar == 1; pa++){
                        hola = 0;
                        for(int pe = 0; pe < estadoNuevo.size() && hola == 0; pe++){
                        if(estadosSigu.get(pa).equals(estadoNuevo.get(pe).getEstadoAc())){
                            hola = 1;
-                           //System.out.println(estadosSigu.get(pa)+" es igual: "+estadoNuevo.get(pe).getEstadoAc());
+                           System.out.println(estadosSigu.get(pa)+" es igual: "+estadoNuevo.get(pe).getEstadoAc());
                        }
                        //System.out.println("estamos en la iteracion de pe: "+pe);
                        }
                        if(hola == 0 ){
-                        /*   auxiliar = 0;
-                       estadoNuevo.add(new nuevosEstados());
-                       estadoNuevo.get(estadoNuevo.size() - 1).setEstadoAc(estadosSigu.get(pa));
-                       estadosSigu.add(estadoNuevo.get(estadoNuevo.size() - 1).getEstadoAc());
-                       System.out.println("Se esta gaurdadno en los iguales el siguiente estado: " + estadoNuevo.get(estadoNuevo.size() - 1).getEstadoAc());
-                       */
                          auxiliar = 0;
-                           if(estadosSigu.get(pa).charAt(0) == 's'){
+                           if(estadosSigu.get(pa).charAt(0) == 'T'){
                                flag = 1;
                                estadoNuevo.add(new nuevosEstados());
                                  estadoNuevo.get(estadoNuevo.size() - 1).setEstadoAc(estadosSigu.get(pa));
                                  estadosSigu.add(estadoNuevo.get(estadoNuevo.size() - 1).getEstadoAc());
                            }else{
+                               
                                  
                                  estadoNuevo.add(new nuevosEstados());
                                  estadoNuevo.get(estadoNuevo.size() - 1).setEstadoAc(estadosSigu.get(pa));
@@ -479,9 +644,14 @@ public class frmConvertidorA extends javax.swing.JFrame {
                                         estadoNuevo.get(estadoNuevo.size() - 1).setEsI(estadosCon[o].getEsI());
                                     }
                                 }
+                                 
                            }
                            }
                        //System.out.println("estamos en la iteracion de pa: "+pa);
+                   }
+                   System.out.println("hola " + hola);
+                   if(hola == 1){
+                   flag = 1;
                    }
                    System.out.println("Ya sali del for del else");
                    }
@@ -524,30 +694,11 @@ public class frmConvertidorA extends javax.swing.JFrame {
                             auxList0.add(estadosCon[k].ingreando0());
                         }
                    aux8 = 1;
+                   
                }
 
            }
            }
-                /*   
-                  ArrayList<String> auxList1 = new ArrayList<String>();
-                   ArrayList<String> auxList0 = new ArrayList<String>();
-                   int aux4 = 0;
-                 for(int j = 0; j < estadosSigu.get(estadosSigu.size() -1).length() && aux4 == 0; j++){
-          // System.out.println(estadosSigu.get(i).charAt(j));
-          
-           for(int k = 0; k < cont; k++){
-               if(estadosSigu.get(estadosSigu.size() -1).charAt(j) == estadosCon[k].getEstadoAC().charAt(0)){
-                        if(!"".equals(estadosCon[k].ingreando1())){
-                            
-                            auxList1.add(estadosCon[k].ingreando1());
-                           }
-                        if(!"".equals(estadosCon[k].ingreando0())){
-                            auxList0.add(estadosCon[k].ingreando0());
-                        }
-                        aux4 = 1;
-               }
-           }
-           }*/
                 System.out.println("Para "+estadoNuevo.get(estadoNuevo.size() - 1).getEstadoAc()+" se esta aniadiendo : ");
                 //char aux11;
                 int a;
@@ -578,7 +729,7 @@ public class frmConvertidorA extends javax.swing.JFrame {
                 //System.out.println("se aniadio: "+auxList1.get(aux34));
                 }
             
-            String auxAs = "s";
+            String auxAs = "T";
             //para lista de los 1
             for(int j = 0; j < auxList1.size(); j++){
                 if(j == 0){
@@ -586,34 +737,34 @@ public class frmConvertidorA extends javax.swing.JFrame {
                 
                  }else{
                     
-                     auxAs = auxAs +","+auxList1.get(j);
+                     auxAs = auxAs +auxList1.get(j);
                  }
                 //System.out.println("Se esta guardado: " + auxAs);
             }
                //System.out.println("se aniado: "+ auxAs);
                //System.out.println("aqui ya la cago jejje");
-               //if(auxAs.charAt(0) == 's'){
-              // }else{
+               if(auxAs.charAt(0) == 'T'){
+              }else{
                estadosSigu.add(auxAs);
-               //}
+               }
                estadoNuevo.get(estadoNuevo.size() - 1).setEstado1(auxAs);
-               auxAs = "s";
+               auxAs = "T";
                //para 0
             for(int j = 0; j < auxList0.size(); j++){
                 if(j == 0){
                 auxAs = auxList0.get(j);
                 
                  }else{
-                     auxAs = auxAs +","+auxList0.get(j);
+                     auxAs = auxAs+auxList0.get(j);
                  }
                 //System.out.println("Se esta guardado: " + auxAs);
             }
                //System.out.println("se aniado: "+ auxAs);
                 //System.out.println("aqui ya la cago jejje 2");
-               //if(auxAs.charAt(0) == 's'){
-               //}else{
+               if(auxAs.charAt(0) == 'T'){
+               }else{
                estadosSigu.add(auxAs);
-               //}
+               }
 
                //estadoNuevo[cont1].setEstado0(auxAs);
                estadoNuevo.get(estadoNuevo.size() - 1).setEstado0(auxAs);
@@ -655,12 +806,32 @@ public class frmConvertidorA extends javax.swing.JFrame {
         }
                 for(int i = 0; i < estadosSigu.size(); i++){
           
-            System.out.println("estados siguientes"+estadosSigu.get(i));
+            System.out.println("estados siguientes "+estadosSigu.get(i));
             //System.out.println("estan ya checados: "+estadosSigu.get(i));
         }
         }
-       System.out.println("sali del while");
-            for(int j = 0; j < estadoNuevo.size(); j++){
+       //System.out.println("sali del while");
+
+           for(int i = 0; i < cont; i++){
+           if("1".equals(estadosCon[i].getEsA())){
+               for(int j = 0; j < estadoNuevo.size(); j++){
+                  if(estadoNuevo.get(j).getEstadoAc().length() >= 2){
+                      for(int k = 0; k < estadoNuevo.get(j).getEstadoAc().length(); k++){
+                          if(estadosCon[i].getEstadoAC().charAt(0) == estadoNuevo.get(j).getEstadoAc().charAt(k)){
+                              System.out.println(estadoNuevo.get(j).getEstadoAc() + "es aceptador");
+                              estadoNuevo.get(j).setEsA("1");
+                          }
+                      }
+                  }else{
+                     if(estadosCon[i].getEstadoAC().charAt(0) == estadoNuevo.get(j).getEstadoAc().charAt(0)){
+                          System.out.println(estadoNuevo.get(j).getEstadoAc() + "es aceptador");     
+                         estadoNuevo.get(j).setEsA("1");
+                          }
+                  }
+               }
+           }
+           }
+                      for(int j = 0; j < estadoNuevo.size(); j++){
             
             System.out.println("estados guardados: "+estadoNuevo.get(j).getEstadoAc());
             System.out.println("estado en 0: "+estadoNuevo.get(j).getEstado0());
@@ -668,7 +839,7 @@ public class frmConvertidorA extends javax.swing.JFrame {
             System.out.println("estado aceptador: "+estadoNuevo.get(j).getEsA());
             System.out.println("estado inical: "+estadoNuevo.get(j).getEsI());
             System.out.println("estan ya checados: "+estadoNuevo.get(j).getFlagCheck());
-            if(!"s".equals(estadoNuevo.get(j).getEstadoAc())){
+            if(!"T".equals(estadoNuevo.get(j).getEstadoAc())){
             sentencia = String.format("INSERT INTO deterministicos(idDeter, estadoAc, estado0, estado1, esInicial, esAceptador, idAceptador) VALUES(null,'%s','%s','%s','%s','%s','%s')",estadoNuevo.get(j).getEstadoAc(),estadoNuevo.get(j).getEstado0() ,estadoNuevo.get(j).getEstado1(),estadoNuevo.get(j).getEsI(),estadoNuevo.get(j).getEsA(),auxId);
             conec.ejecutar(sentencia);
             }

@@ -28,7 +28,7 @@ public class conexion {
       try {
           PreparedStatement pstm = conn.prepareStatement(sentencia);
           pstm.execute();
-          System.out.println("Se ejecuto: "+sentencia);
+          System.out.println("Se ejecuto: " + sentencia);
           return 1;
       } catch (Exception e) {
           System.out.println("Error en "+sentencia+" : "+e);
